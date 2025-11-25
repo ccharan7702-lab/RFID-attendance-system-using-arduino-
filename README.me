@@ -1,0 +1,79 @@
+# Arduino RFID Attendance System
+
+This project is an RFID-based attendance system using an Arduino Uno (or compatible) and an MFRC522 RFID reader. The system reads RFID cards and checks if the card UID matches any preset authorized UIDs. Feedback (such as LEDs or a buzzer) is optional and can be connected to digital pins defined in the code.
+
+## Features
+
+- Scan RFID cards to register attendance.
+- Recognizes pre-set authorized card UIDs.
+- Serial output of scanned UID and attendance result.
+- **Optional:** Use LEDs, a buzzer, or other devices for visual/audible feedback.
+
+## Hardware Required
+
+- Arduino UNO (or compatible)
+- MFRC522 RFID Reader Module
+- RFID cards or key fobs (13.56MHz)
+- Breadboard and jumper wires
+
+**Optional (for feedback, using pins 8 and 7 as defined in code):**
+- LED(s) with 220Ω resistor
+- Buzzer
+
+## Wiring Connections
+
+| MFRC522 Pin | Arduino UNO Pin |
+| :---------- | :-------------- |
+| SDA (SS)    | 10              |
+| SCK         | 13              |
+| MOSI        | 11              |
+| MISO        | 12              |
+| IRQ         | Not connected   |
+| GND         | GND             |
+| RST         | 9               |
+| 3.3V        | 3.3V            |
+
+**Optional Feedback Devices:**  
+- Connect any LED/buzzer/signal device to **pin 8 and/or pin 7** as desired.
+    - For LED: Anode (long leg) to pin, cathode to GND via resistor.
+    - For buzzer: Positive to pin, negative to GND.
+
+## Software Setup
+
+1. Install the [MFRC522 Arduino library](https://github.com/miguelbalboa/rfid) via Library Manager or directly from GitHub.
+2. Copy the contents of `rfid_attendance.ino` to a new sketch in the Arduino IDE.
+3. Connect your hardware as above.
+4. Upload the code to your Arduino.
+
+## Customizing
+
+- To add new authorized cards:  
+  1. Open Serial Monitor (9600 baud) in the Arduino IDE.
+  2. Scan a card and copy the UID shown in the output.
+  3. Add it to the `knownIDs` array in the code (use format: `"XX XX XX XX"`).
+
+## Example Serial Output
+
+```
+RFID Reader Ready. Scan your card...
+Card UID: B4 4D 51 21
+Authorized - Attendance Marked!
+```
+or
+```
+Card UID: 92 5D 32 17
+Unauthorized Card!
+```
+
+## How it Works
+
+- When a card is scanned, its UID is printed to Serial.
+- If the UID matches one in the `knownIDs` array, the system indicates "Authorized" and can trigger optional devices via pin 8 and/or pin 7.
+- Otherwise, it signals "Unauthorized" and can alert via the same pins if you have devices connected.
+- All essential feedback and identification are available via Serial Monitor.
+
+---
+
+## License
+
+MIT
